@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2021 at 03:20 PM
+-- Generation Time: May 28, 2021 at 10:24 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.5
 
@@ -166,7 +166,7 @@ INSERT INTO `dialects` (`dialect_id`, `dialect_name`) VALUES
 (127, 'Sangu'),
 (128, 'Segeju'),
 (129, 'Swengwear'),
-(130, 'Shambaa'),
+(130, 'Sambaa'),
 (131, 'Shirazi'),
 (132, 'Shubi'),
 (133, 'Sizaki'),
