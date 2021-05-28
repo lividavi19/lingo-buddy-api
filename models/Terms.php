@@ -1,11 +1,11 @@
 <?php
     // headers
     header('Content-Type: application/json');
-    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: '.(!empty($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['SERVER_NAME']);
 
     // require loaders
-    require_once $_SERVER['DOCUMENT_ROOT'].'/devi/lingo-buddy-api/autoloaders/load_db.php';
-    require_once $_SERVER['DOCUMENT_ROOT'].'/devi/lingo-buddy-api/autoloaders/load_helpers.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/autoloaders/load_db.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/autoloaders/load_helpers.php';
 
     class Terms {
         private $table = 'terms';
