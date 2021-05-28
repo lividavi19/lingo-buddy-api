@@ -8,11 +8,11 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/autoloaders/load_helpers.php';
 
     class Dialects {
-        private $stmt = '';
         private $table = 'dialects';
+        private $stmt = '';
+        private $dialect_name = '';
         private $db = '';
         private $conn = '';
-        private $dialect_name = '';
         private $Json = '';
 
         // consructor
@@ -22,15 +22,15 @@
             $this->conn = $this->db->getConnection();
         }
 
-        // function to add new dialect
+        // function to a add new dialect
         function addDialect ($dialect_name = '') {
             // trim the inputs
             $dialect_name = trim($dialect_name);
-            // check if function argument presents and if it's not null
+            // check if function argument, for the dialect name to add, presents and if it's not null
             if ($dialect_name == NULL) {
                 $info = [
                     'success' => false,
-                    'message' => 'dialect to add not found'
+                    'message' => 'provide a dialect name to add'
                 ];
                 $this->Json->printJson($info);
             }
@@ -77,24 +77,23 @@
         // function to get dialect(s)
         function getDialects ($dialect_name = '') {
             $dialect_name = trim($dialect_name);
-            // array_key_exists('dialect_name', $_GET) && $_GET['dialect_name'] != NULL
-            // check if function argument presents and if it's not null
+            // check if optional function argument, for the specific dialect to get, presents and if it's not null
             if ($dialect_name != NULL) {
-                $this->dialect_name = $dialect_name;
+                $this->dialect_name = addslashes(trim($dialect_name));
 
                 $this->stmt = "SELECT * FROM $this->table WHERE dialect_name = '$this->dialect_name'";
                 $q = $this->conn->query($this->stmt);
 
-                // check if dialect not exists
+                // check if the dialect doesn't exist
                 if ($q->num_rows < 1) {
                     $info = [
                         'success' => false,
-                        'message' => "dialect {$this->dialect_name} not exists yet"
+                        'message' => "dialect '{$this->dialect_name}' doesn't exist yet"
                     ];
                     $this->Json->printJson($info);
                 }
 
-                // dialect does exist
+                // the dialect does exists
                 $info = [
                     'success' => true,
                     'data' => $q->fetch_assoc()
@@ -102,20 +101,20 @@
                 $this->Json->printJson($info);
             }
 
-            // no query string, select all dialects
+            // no optional function argument, for the specific dialect to get, select all dialects
             $this->stmt = "SELECT * FROM $this->table ORDER BY dialect_name";
             $q = $this->conn->query($this->stmt);
 
-            // check if there's no registered dialect
+            // check if no dialect(s) exist(s)
             if ($q->num_rows < 1) {
                 $info = [
                     'success' => false,
-                    'message' => 'no dialect(s) registered yet'
+                    'message' => 'no dialect(s) exist(s) yet'
                 ];
                 $this->Json->printJson($info);
             }
 
-            // dialect(s) found, loop through them
+            // dialect(s) exist(S), loop through them(or it)
             while ($record = $q->fetch_assoc()) {
                 $dialects[] = $record;
             }
@@ -130,31 +129,31 @@
         // function to search dialect(s)
         function searchDialects ($dialect_name = '') {
             $dialect_name = trim($dialect_name);
-            // check if function argument presents and if it's not null
+            // check if function argument, for the dialect to search-for, presents and if it's not null
             if ($dialect_name == NULL) {
                 $info = [
                     'success' => false,
-                    'message' => 'dialect(s) name to search not found'
+                    'message' => 'provide a dialect name to search for'
                 ];
                 $this->Json->printJson($info);
             }
 
-            $this->dialect_name = $dialect_name;
+            // function argument, for the dialect to search-for, presents and it's not null
+            $this->dialect_name = addslashes($dialect_name);
 
-            // no query string, select all dialects
             $this->stmt = "SELECT * FROM $this->table WHERE dialect_name LIKE '$this->dialect_name%' ORDER BY dialect_name";
             $q = $this->conn->query($this->stmt);
 
-            // check if there's no registered dialect
+            // check if no dialect(s) exist(s)
             if ($q->num_rows < 1) {
                 $info = [
                     'success' => false,
-                    'message' => 'no dialect match your search'
+                    'message' => 'no dialect result match your search'
                 ];
                 $this->Json->printJson($info);
             }
 
-            // dialect(s) found, loop through them
+            // dialect(s) exis(t), loop through them(or it)
             while ($record = $q->fetch_assoc()) {
                 $dialects[] = $record;
             }

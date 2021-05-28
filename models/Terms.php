@@ -9,10 +9,10 @@
 
     class Terms {
         private $table = 'terms';
-        private $term = '';
-        private $dialect_name = '';
-        private $translation = '';
         private $stmt = '';
+        private $dialect_name = '';
+        private $term = '';
+        private $translation = '';
         private $db = '';
         private $conn = '';
         private $Json = '';
@@ -24,18 +24,18 @@
             $this->conn = $this->db->getConnection();
         }
 
-        // function to add new term
+        // function to a add new term
         function addTerm ($dialect_name = '', $term = '', $translation = '') {
-            // strip whitw spaces from the inputs
+            // strip white spaces from the inputs
             $dialect_name = trim($dialect_name);
             $term = trim($term);
             $translation = trim($translation);
-            // check if function arguments presents and if it's not null
+            // check if above function arguments presents, and if they're not null
             // check for dialect_name
             if ($dialect_name == NULL) {
                 $info = [
                     'success' => false,
-                    'message' => 'dialect for the term not found'
+                    'message' => 'provide the dialect name to for the term to be added'
                 ];
                 $this->Json->printJson($info);
             }
@@ -43,7 +43,7 @@
             if ($term == NULL) {
                 $info = [
                     'success' => false,
-                    'message' => 'term to add not found'
+                    'message' => 'provide the term to be added'
                 ];
                 $this->Json->printJson($info);
             }
@@ -51,11 +51,12 @@
             if ($translation == NULL) {
                 $info = [
                     'success' => false,
-                    'message' => 'translation to the term not found'
+                    'message' => 'provide the translation for the term to be added'
                 ];
                 $this->Json->printJson($info);
             }
 
+            // above function arguments presents, and they're not null
             $this->dialect_name = addslashes($dialect_name);
             $this->term = addslashes($term);
             $this->translation = addslashes($translation);
@@ -64,16 +65,16 @@
             $this->stmt = "SELECT term FROM $this->table WHERE dialect='$this->dialect_name' && term='$this->term' && translation='$this->translation'";
             $q = $this->conn->query($this->stmt);
             if ($q->num_rows >= 1) {
-                // term already exists
+                // term and translation for the given dialect name already exists
                 $info = [
                     'success' => false,
-                    'message' => "the {$this->dialect_name} term '{$this->term}' with the given translation already exists"
+                    'message' => "the term and translation for the given dialect name already exists"
                 ];
                 $this->Json->printJson($info);
             }
 
-            // insert the term
-            $this->stmt = "INSERT INTO $this->table(dialect, term, translation) VALUES('$this->dialect_name', '$this->term', '$this->translation')";
+            // term and translation for the given dialect don't exists, go on & insert the term
+            $this->stmt = "INSERT INTO $this->table(*) VALUES('$this->dialect_name', '$this->term', '$this->translation')";
             $q = $this->conn->query($this->stmt);
 
             // check if query was not a success
@@ -88,7 +89,7 @@
             // term insert was a success
             $info = [
                 'success' => true,
-                'message' => 'the term has been successfully added',
+                'message' => 'the term and translation for the given dialect has been successfully added',
                 'data' => [
                     'term_id' => $this->conn->insert_id,
                     'dialect' => $this->dialect_name,
@@ -102,24 +103,23 @@
         // function to get term(s)
         function getTerms ($term = '') {
             $term = trim($term);
-            // check if function argument presents and if it's not null
+            // check if optional function argument, for term(s) to get, presents and if it's not null
             if ($term != NULL) {
-                $this->term = $term;
+                $this->term = addslashes($term);
 
-                $this->stmt = "SELECT dialect, term, translation FROM $this->table WHERE dialect = '$this->term' || term = '$this->term' || translation = '$this->term' ORDER BY term, translation";
+                $this->stmt = "SELECT * FROM $this->table WHERE dialect = '$this->term' || term = '$this->term' || translation = '$this->term' ORDER BY term, translation";
                 $q = $this->conn->query($this->stmt);
 
-                // check if term not exists
+                // check if the term doesn't exist
                 if ($q->num_rows < 1) {
                     $info = [
                         'success' => false,
-                        'message' => "term '{$this->term}' not exists yet"
+                        'message' => "term '{$this->term}' doesn't exist yet"
                     ];
                     $this->Json->printJson($info);
                 }
 
-                // term does exist
-
+                // the term does exist
                 while ($record = $q->fetch_assoc()) {
                     $terms[] = $record;
                 }
@@ -130,20 +130,20 @@
                 $this->Json->printJson($info);
             }
 
-            // no query string, select all terms
-            $this->stmt = "SELECT dialect, term, translation FROM $this->table ORDER BY term, translation";
+            // no optional function argument, for the specific term(s) to get, select all terms
+            $this->stmt = "SELECT * FROM $this->table ORDER BY term, translation";
             $q = $this->conn->query($this->stmt);
 
-            // check if there's no registered term
+            // check if no term(s) exist(s)
             if ($q->num_rows < 1) {
                 $info = [
                     'success' => false,
-                    'message' => 'no term(s) registered yet'
+                    'message' => 'no term(s) exist(s) yet'
                 ];
                 $this->Json->printJson($info);
             }
 
-            // term(s) found, loop through them
+            // term(s) exist(S), loop through them(or it)
             while ($record = $q->fetch_assoc()) {
                 $terms[] = $record;
             }
@@ -158,31 +158,31 @@
         // function to search term(s)
         function searchTerms ($term = '') {
             $term = trim($term);
-            // check if function argument presents and if it's not null
+            // check if function argument, for the term to search-for, presents and if it's not null
             if ($term == NULL) {
                 $info = [
                     'success' => false,
-                    'message' => 'term(s) to search not found'
+                    'message' => 'provide a term to search for'
                 ];
                 $this->Json->printJson($info);
             }
 
-            $this->term = $term;
+            // function argument, for the term to search-for, presents and it's not null
+            $this->term = addslashes($term);
 
-            // no query string, select all terms
-            $this->stmt = "SELECT dialect, term, translation FROM $this->table WHERE dialect LIKE '$this->term%' || term LIKE '$this->term%' || translation LIKE '$this->term%' ORDER BY term, translation";
+            $this->stmt = "SELECT * FROM $this->table WHERE dialect LIKE '$this->term%' || term LIKE '$this->term%' || translation LIKE '$this->term%' ORDER BY term, translation";
             $q = $this->conn->query($this->stmt);
 
-            // check if there's no registered term
+            // check if no term(s) exist(s)
             if ($q->num_rows < 1) {
                 $info = [
                     'success' => false,
-                    'message' => 'no term match your search'
+                    'message' => 'no term result match your search'
                 ];
                 $this->Json->printJson($info);
             }
 
-            // term(s) found, loop through them
+            // term(s) exis(t), loop through them(or it)
             while ($record = $q->fetch_assoc()) {
                 $terms[] = $record;
             }
