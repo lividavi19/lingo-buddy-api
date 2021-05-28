@@ -1,140 +1,10 @@
 {
 	"info": {
-		"_postman_id": "8170a71c-6bcb-4b5e-9389-40dfac3350de",
+		"_postman_id": "c6154012-ea1a-46de-a8b4-85501973737f",
 		"name": "lang-app-api",
-		"description": "A collection that helps learning dialect languages, currently in Tanzania.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "terms",
-			"item": [
-				{
-					"name": "add_term",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://lang-app.000webhostapp.com/api/terms/add_term.php?dialect={{dialect}}&term={{term}}&translation={{translation}}",
-							"protocol": "https",
-							"host": [
-								"lang-app",
-								"000webhostapp",
-								"com"
-							],
-							"path": [
-								"api",
-								"terms",
-								"add_term.php"
-							],
-							"query": [
-								{
-									"key": "dialect",
-									"value": "{{dialect}}",
-									"description": "dialect name for the term"
-								},
-								{
-									"key": "term",
-									"value": "{{term}}",
-									"description": "term to add"
-								},
-								{
-									"key": "translation",
-									"value": "{{translation}}",
-									"description": "translation to the term"
-								}
-							]
-						},
-						"description": "This endpoint adds a new, un-existing term. It expects three inputs;\n-> dialect name for the term\n-> term itself\n-> translation to the term\nWith no any of the above inputs, the task wont be executed, with the information given on why the task was a failure"
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_terms",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://lang-app.000webhostapp.com/api/terms/get_terms.php",
-							"protocol": "https",
-							"host": [
-								"lang-app",
-								"000webhostapp",
-								"com"
-							],
-							"path": [
-								"api",
-								"terms",
-								"get_terms.php"
-							]
-						},
-						"description": "This endpoint retrieves all registered terms."
-					},
-					"response": []
-				},
-				{
-					"name": "get_specific_term",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://lang-app.000webhostapp.com/api/terms/get_terms.php?term={{term}}",
-							"protocol": "https",
-							"host": [
-								"lang-app",
-								"000webhostapp",
-								"com"
-							],
-							"path": [
-								"api",
-								"terms",
-								"get_terms.php"
-							],
-							"query": [
-								{
-									"key": "term",
-									"value": "{{term}}",
-									"description": "specific term to search"
-								}
-							]
-						},
-						"description": "This endpoint can receive one optional input; -> the term (if you want to get specifics terms).\nIt retreives all registered terms that fits the input."
-					},
-					"response": []
-				},
-				{
-					"name": "search_terms",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://lang-app.000webhostapp.com/api/terms/search_terms.php?term={{term}}",
-							"protocol": "https",
-							"host": [
-								"lang-app",
-								"000webhostapp",
-								"com"
-							],
-							"path": [
-								"api",
-								"terms",
-								"search_terms.php"
-							],
-							"query": [
-								{
-									"key": "term",
-									"value": "{{term}}",
-									"description": "term to search"
-								}
-							]
-						},
-						"description": "This endpoint must receives one input, term. It searches for the term(s) that it was fed."
-					},
-					"response": []
-				}
-			],
-			"description": "A sub directory where all terms-related endpoints resides"
-		},
 		{
 			"name": "dialects",
 			"item": [
@@ -273,6 +143,135 @@
 				}
 			],
 			"description": "A sub directory where all dialects-related endpoints resides"
+		},
+		{
+			"name": "terms",
+			"item": [
+				{
+					"name": "add_term",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://lang-app.000webhostapp.com/api/terms/add_term.php?dialect={{dialect}}&term={{term}}&translation={{translation}}",
+							"protocol": "https",
+							"host": [
+								"lang-app",
+								"000webhostapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"terms",
+								"add_term.php"
+							],
+							"query": [
+								{
+									"key": "dialect",
+									"value": "{{dialect}}",
+									"description": "dialect name for the term"
+								},
+								{
+									"key": "term",
+									"value": "{{term}}",
+									"description": "term to add"
+								},
+								{
+									"key": "translation",
+									"value": "{{translation}}",
+									"description": "translation to the term"
+								}
+							]
+						},
+						"description": "This endpoint adds a new, un-existing term. It expects three inputs;\n-> dialect name for the term\n-> term itself\n-> translation to the term\nWith no any of the above inputs, the task wont be executed, with the information given on why the task was a failure"
+					},
+					"response": []
+				},
+				{
+					"name": "get_all_terms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://lang-app.000webhostapp.com/api/terms/get_terms.php",
+							"protocol": "https",
+							"host": [
+								"lang-app",
+								"000webhostapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"terms",
+								"get_terms.php"
+							]
+						},
+						"description": "This endpoint retrieves all registered terms."
+					},
+					"response": []
+				},
+				{
+					"name": "get_specific_term",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://lang-app.000webhostapp.com/api/terms/get_terms.php?term={{term}}",
+							"protocol": "https",
+							"host": [
+								"lang-app",
+								"000webhostapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"terms",
+								"get_terms.php"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "{{term}}",
+									"description": "specific term to search"
+								}
+							]
+						},
+						"description": "This endpoint can receive one optional input; -> the term (if you want to get specifics terms).\nIt retreives all registered terms that fits the input."
+					},
+					"response": []
+				},
+				{
+					"name": "search_terms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://lang-app.000webhostapp.com/api/terms/search_terms.php?term={{term}}",
+							"protocol": "https",
+							"host": [
+								"lang-app",
+								"000webhostapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"terms",
+								"search_terms.php"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "{{term}}",
+									"description": "term to search"
+								}
+							]
+						},
+						"description": "This endpoint must receives one input, term. It searches for the term(s) that it was fed."
+					},
+					"response": []
+				}
+			],
+			"description": "A sub directory where all terms-related endpoints resides"
 		}
 	],
 	"event": [
